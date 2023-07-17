@@ -7,12 +7,10 @@ from playsound import playsound
 from App.Logic.getMorse import getSignalList
 from App.Asset.Symbol.Symbol import symbol
 
-
 import time
 
 
 class playMarse:
-    
 
     def playMorse(formText,longSound,shortSound,langFlg,playTxt,nowTxt,nowSound):
         check = checker
@@ -30,7 +28,6 @@ class playMarse:
         resSound = check.soundChecker(longSound,shortSound)
         if type(resSound) is str:
             playTxt.set(symbol.PLAY_BTN)
-            
             return messagebox.showerror("サウンドエラー",resSound)
 
         #再生スレッド
@@ -64,11 +61,17 @@ class playMarse:
                 for s in signal[symbol.KEY_SIGNAL]:
                     if playTxt.get() == symbol.STOP_BTN:
                         if s == 0:
-                            nowSound.set(symbol.SHORT_SOUND)
-                            playsound(shortSound)
+                            try:
+                                nowSound.set(symbol.SHORT_SOUND)
+                                playsound(shortSound)
+                            except:
+                                return messagebox.showerror("サウンドエラー","短音ファイルが破損している可能性があります。")
                         elif s == 1:
-                            nowSound.set(symbol.LONG_SOUND)
-                            playsound(longSound)
+                            try:
+                                nowSound.set(symbol.LONG_SOUND)
+                                playsound(longSound)
+                            except:
+                                return messagebox.showerror("サウンドエラー","長音ファイルが破損している可能性があります。")
                         else:
                             nowSound.set("")
                             playInterval()

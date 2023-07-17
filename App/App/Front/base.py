@@ -7,6 +7,7 @@ from tkinter import scrolledtext
 from App.Asset.Symbol.Symbol import symbol
 
 from App.Logic.playMorse import playMarse
+from App.Logic.downloadMorse import downloadMorse
 
 #幅
 width = 480
@@ -61,7 +62,7 @@ def baseWindow():
     #コントロールボタン
     langBtn()
     playBtn(formText,long,short)
-    downloadBtn()
+    downloadBtn(formText,long,short)
     nowTxtLbl()
     nowSoundLbl()
 
@@ -193,7 +194,6 @@ def playBtn(formText,formLong,formShort):
     def clickBtn():
         #パラメータ
         if playText.get() == symbol.PLAY_BTN:
-            text = formText.get(0.0,tk.END).strip()
             long = formLong.get().strip()
             short = formShort.get().strip()
             langFlg = True
@@ -213,14 +213,19 @@ def playBtn(formText,formLong,formShort):
     playBtn.place(x=width*2/3,y=heigth*4/5,width=width/10,height=heigth/12)
 
 #保存ボタン
-def downloadBtn():
-    text = tk.StringVar()
-    text.set(symbol.SAVE_BTN)
+def downloadBtn(formText,formLong,formShort):
     def clickBtn():
-        if playText.get() == symbol.PLAY_SYMBOL:
-            print("保存メソッド")
+        long = formLong.get().strip()
+        short = formShort.get().strip()
+        langFlg = True
+        if langText.get() == symbol.LNG_JPN:
+            langFlg = True
+        else:
+            langFlg =False
+        download = downloadMorse
+        download.download(formText,long,short,langFlg)
 
-    downBtn = tk.Button(root,textvariable=text,command=clickBtn)
+    downBtn = tk.Button(root,text="保存",command=clickBtn)
     downBtn.place(x=width*4/5,y=heigth*4/5,width=width/10,height=heigth/12)
 
 #数字カウント
@@ -239,12 +244,13 @@ def nowTxtLbl():
 
     return txtLbl
     
-#再生音
+#再生音表示
 def nowSoundLbl():
     soundLbl = tk.Label(textvariable=nowSound,fg="black",bg="lightgreen")
     soundLbl.config(font=("",48))
     soundLbl.place(x=width*12/21,y=heigth*6/11,width=width/5,height=heigth/4)
 
     return soundLbl
+
 
     
